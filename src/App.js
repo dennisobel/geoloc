@@ -26,13 +26,14 @@ const App = () => {
 
       // Set the captured image as the source
       setImageSrc(dataUrl);
-      setDisplay("none")
     }
   };
 
   const handleStartCapture = () => {
     if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true })
+      const constraints = { video: { facingMode: 'environment' } };
+
+      navigator.mediaDevices.getUserMedia(constraints)
         .then((stream) => {
           const video = videoRef.current;
           if (video) {
@@ -41,7 +42,7 @@ const App = () => {
           }
         })
         .catch((error) => {
-          console.log('Error accessing webcam:', error);
+          console.log('Error accessing camera:', error);
         });
     }
   };
