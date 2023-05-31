@@ -48,7 +48,7 @@ const App = () => {
 
   useEffect(()=>{
     const distance = calculateDistance(
-      { lat: -1.3326934, lng: 36.9003409 },
+      { lat: -1.3361619, lng: 36.8943361 },
       { lat: currentLocation?.latitude, lng: currentLocation?.longitude }      
     );
 
