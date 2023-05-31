@@ -26,6 +26,7 @@ const App = () => {
 
       // Set the captured image as the source
       setImageSrc(dataUrl);
+      setDisplay("none")
     }
   };
 
