@@ -1,8 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 const App = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [distance,setDistance] = useState()
+  const [display,setDisplay] = useState("")
+
+  const videoRef = useRef(null);
+  const [imageSrc, setImageSrc] = useState('');
+
+  const handleCapture = () => {
+    const video = videoRef.current;
+
+    if (video) {
+      const canvas = document.createElement('canvas');
+      const context = canvas.getContext('2d');
+
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      // Draw the video frame onto the canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert the canvas image to a data URL
+      const dataUrl = canvas.toDataURL('image/png');
+
+      // Set the captured image as the source
+      setImageSrc(dataUrl);
+      setDisplay("none")
+    }
+  };
+
+  const handleStartCapture = () => {
+    if (navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then((stream) => {
+          const video = videoRef.current;
+          if (video) {
+            video.srcObject = stream;
+            video.play();
+          }
+        })
+        .catch((error) => {
+          console.log('Error accessing webcam:', error);
+        });
+    }
+  };
 
   function calculateDistance(origin, destination) {
     const earthRadius = 6371; // Radius of the Earth in kilometers
@@ -61,6 +103,17 @@ const App = () => {
       <p>Latitude: {currentLocation?.latitude}</p>
       <p>Longitude: {currentLocation?.longitude}</p>
       <p>Distance: {distance && distance}</p>
+      <br/>
+      <div>
+      <div>
+        <button onClick={handleStartCapture}>Start Capture</button>
+        <button onClick={handleCapture}>Capture Image</button>
+      </div>
+      <div>
+        {imageSrc && <img src={imageSrc} alt="Captured" />}
+      </div>
+      <video ref={videoRef} style={{ display }}></video>
+    </div>
     </div>
   );
 };
