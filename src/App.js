@@ -43,7 +43,7 @@ const App = () => {
 
     const distance = calculateDistance(
       { lat: currentLocation?.latitude, lng: currentLocation?.longitude },
-      { lat: -1.7824086, lng: 37.6267237 }
+      { lat: -1.3326934, lng: 36.9003409 }
     );
 
     console.log(distance)
