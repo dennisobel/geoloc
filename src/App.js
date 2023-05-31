@@ -41,25 +41,26 @@ const App = () => {
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
     );
 
-    const distance = calculateDistance(
-      { lat: currentLocation?.latitude, lng: currentLocation?.longitude },
-      { lat: -1.3326934, lng: 36.9003409 }
-    );
-
-    console.log(distance)
-
-    setDistance(distance)
-
     return () => {
       navigator.geolocation.clearWatch(watchId);
     };
   }, []);
 
+  useEffect(()=>{
+    const distance = calculateDistance(
+      { lat: -1.3326934, lng: 36.9003409 },
+      { lat: currentLocation?.latitude, lng: currentLocation?.longitude }      
+    );
+
+    console.log(distance)
+    setDistance(distance)
+  },[currentLocation])
+
   return (
     <div>
       <p>Latitude: {currentLocation?.latitude}</p>
       <p>Longitude: {currentLocation?.longitude}</p>
-      <p>Distance: {distance}</p>
+      <p>Distance: {distance && distance}</p>
     </div>
   );
 };
